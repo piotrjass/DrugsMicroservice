@@ -10,4 +10,11 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\" />
+      <Folder Include="BusinessLogic\" />
+      <Folder Include="Presentation\" />
+      <Folder Include="Properties\DataAccess\" />
+    </ItemGroup>
+
 </Project>
