@@ -13,8 +13,8 @@
     <ItemGroup>
       <Folder Include="Application\" />
       <Folder Include="BusinessLogic\" />
+      <Folder Include="DataAccess\" />
       <Folder Include="Presentation\" />
-      <Folder Include="Properties\DataAccess\" />
     </ItemGroup>
 
 </Project>
