@@ -11,8 +11,10 @@ public static class ConfigureServices
     {
         services.AddScoped<IDrugsService, DrugsService>();
         services.AddScoped<ISubstancesService, SubstancesService>();
+        services.AddScoped<IDiseasesService, DiseasesService>();
         
         services.AddScoped<IDrugsRepository, DrugsRepository>();
         services.AddScoped<ISubstancesRepository, SubstancesRepository>();
+        services.AddScoped<IDiseasesRepository, DiseasesRepository>();
 }
 }

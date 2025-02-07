@@ -9,8 +9,7 @@ namespace DrugsMicroservice.DataAccess
             : base(options)
         {
         }
-
-   
+        
         public DbSet<Drug> Drugs { get; set; }
         public DbSet<Substance> Substances { get; set; }
         
@@ -19,12 +18,9 @@ namespace DrugsMicroservice.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
             modelBuilder.Entity<Drug>().ToTable("Drugs");
             modelBuilder.Entity<Substance>().ToTable("Substances");
             modelBuilder.Entity<Disease>().ToTable("Diseases");
-
-     
         }
     }
 }

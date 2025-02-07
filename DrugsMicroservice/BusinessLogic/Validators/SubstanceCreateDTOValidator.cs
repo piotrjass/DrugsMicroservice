@@ -14,5 +14,6 @@ public class SubstanceCreateDTOValidator : AbstractValidator<SubstanceCreateDTO>
         RuleFor(x => x.Dosage)
             .NotEmpty().WithMessage("Dosage is required.")
             .MaximumLength(50).WithMessage("Dosage cannot be longer than 50 characters.");
+        
     }
 }

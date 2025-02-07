@@ -19,27 +19,25 @@ public class DrugsController : ControllerBase
         _substancesService = substancesService;
     }
     
-    // GET: api/drugs
     [HttpGet("GetAllDrugs")]
     public ActionResult<IEnumerable<Drug>> GetAllDrugs()
     {
         var drugs = _drugsService.GetAllDrugs();
-        return Ok(drugs); // Zwracamy listę leków
+        return Ok(drugs); 
     }
 
-    // GET: api/drugs/5
     [HttpGet("GetAllDrugsById/{id}")]
     public ActionResult<Drug> GetAllDrugsById(Guid id)
     {
         var drug = _drugsService.GetDrugById(id);
         if (drug == null)
         {
-            return NotFound(); // Zwrócenie 404, jeśli lek nie został znaleziony
+            return NotFound(); 
         }
-        return Ok(drug); // Zwracamy lek w odpowiedzi
+        return Ok(drug); 
     }
 
-    // POST: api/drugs/AddDrug
+
     [HttpPost("AddDrug")]
     public ActionResult<Drug> AddDrug([FromBody] DrugCreateDTO newDrugDto)
     {
@@ -47,23 +45,21 @@ public class DrugsController : ControllerBase
         {
             return BadRequest("Drug data is null.");
         }
-
-        // Tworzenie nowego obiektu Drug z DTO
+        
         var drug = new Drug
         {
+            Id = Guid.NewGuid(),
             Name = newDrugDto.Name,
             Manufacturer = newDrugDto.Manufacturer,
             Price = newDrugDto.Price
         };
-        
-        // Dodanie nowego leku przez serwis
         var createdDrug = _drugsService.AddDrug(drug);
 
-        // Zwrócenie odpowiedzi z kodem 201 i lokalizacją nowo dodanego leku
+
         return CreatedAtAction(nameof(GetAllDrugsById), new { id = createdDrug.Id }, createdDrug);
     }
 
-    // PUT: api/drugs/UpdateDrug/5
+ 
     [HttpPut("UpdateDrug/{id}")]
     public ActionResult<Drug> UpdateDrug(Guid id, [FromBody] DrugUpdateDTO drugUpdateDto)
     {
@@ -77,25 +73,26 @@ public class DrugsController : ControllerBase
             Name = drugUpdateDto.Name,
             Manufacturer = drugUpdateDto.Manufacturer,
             Price = drugUpdateDto.Price
+            
         });
 
         if (updatedDrug == null)
         {
-            return NotFound(); // Zwrócenie 404, jeśli nie znaleziono leku
+            return NotFound();
         }
 
-        return Ok(updatedDrug); // Zwrócenie zaktualizowanego leku
+        return Ok(updatedDrug); 
     }
 
-    // DELETE: api/drugs/DeleteDrug/5
+
     [HttpDelete("DeleteDrug/{id}")]
     public ActionResult DeleteDrug(Guid id)
     {
         var result = _drugsService.DeleteDrug(id);
         if (!result)
         {
-            return NotFound(); // Zwrócenie 404, jeśli nie znaleziono leku do usunięcia
+            return NotFound();
         }
-        return NoContent(); // Zwrócenie 204, jeśli usunięcie powiodło się
+        return NoContent(); 
     }
 }

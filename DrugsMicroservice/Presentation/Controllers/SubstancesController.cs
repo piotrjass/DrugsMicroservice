@@ -34,21 +34,27 @@ public class SubstancesController : ControllerBase
         return Ok(substance); 
     }
     [HttpPost("AddSubstance")]
-    public ActionResult<Substance> AddSubstance([FromBody] SubstanceCreateDTO newSubstanceDto)
+    public async Task<ActionResult<Substance>> AddSubstance([FromBody] SubstanceCreateDTO newSubstanceDto)
     {
         if (newSubstanceDto == null)
         {
             return BadRequest("Substance data is null.");
         }
-
         
-        var substance = new Substance
+        var newSubstance = new Substance
         {
+            Id = Guid.NewGuid(),  
             SubstanceName = newSubstanceDto.Name,
             Dosage = newSubstanceDto.Dosage
         };
 
-        var createdSubstance = _substancesService.AddSubstance(substance);
+     
+        var createdSubstance =  _substancesService.AddSubstance(newSubstance); 
+
+        if (createdSubstance == null)
+        {
+            return BadRequest("There was an error while adding the substance.");
+        }
         
         return CreatedAtAction(nameof(GetSubstanceById), new { id = createdSubstance.Id }, createdSubstance);
     }

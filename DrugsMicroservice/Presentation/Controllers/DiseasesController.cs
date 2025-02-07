@@ -44,6 +44,7 @@ public class DiseasesController : ControllerBase
         
         var disease = new Disease
         {
+            Id = Guid.NewGuid(),
             Name = newDiseaseDto.Name,
         };
 

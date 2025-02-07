@@ -17,8 +17,5 @@ public class DrugCreateDTOValidator : AbstractValidator<DrugCreateDTO>
         RuleFor(x => x.Price)
             .GreaterThan(0).WithMessage("Price must be greater than 0.");
 
-        RuleFor(x => x.SubstanceIds)
-            .NotEmpty().WithMessage("At least one substance ID is required.")
-            .Must(substances => substances.All(id => id > 0)).WithMessage("All substance IDs must be greater than 0.");
     }
 }

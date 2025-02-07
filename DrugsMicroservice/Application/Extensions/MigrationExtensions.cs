@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DrugsMicroservice.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugsMicroservice.Application.Extensions;
 
@@ -8,9 +9,10 @@ public static class MigrationExtensions
     {
         using IServiceScope scope = app.ApplicationServices.CreateScope();
 
-        using DbContext dbContext =
-            scope.ServiceProvider.GetRequiredService<DbContext>();
+        // Zmieniamy DbContext na konkretny typ ApplicationDbContext
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+        // Uruchamiamy migracje
         dbContext.Database.Migrate();
     }
 }
