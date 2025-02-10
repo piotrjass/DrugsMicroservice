@@ -22,6 +22,11 @@ namespace DrugsMicroservice.DataAccess.Repositories
         {
             return _context.Diseases.FirstOrDefault(d => d.Id == id);  
         }
+        
+        public Disease GetDiseaseByName(string name)
+        {
+            return _context.Diseases.FirstOrDefault(d => d.Name == name);
+        }
 
         public Disease Add(Disease disease)
         {

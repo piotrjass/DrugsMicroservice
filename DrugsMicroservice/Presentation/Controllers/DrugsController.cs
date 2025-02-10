@@ -45,18 +45,32 @@ public class DrugsController : ControllerBase
         {
             return BadRequest("Drug data is null.");
         }
-        
-        var drug = new Drug
+
+        Drug newDrug = new Drug
         {
-            Id = Guid.NewGuid(),
             Name = newDrugDto.Name,
             Manufacturer = newDrugDto.Manufacturer,
             Price = newDrugDto.Price
         };
-        var createdDrug = _drugsService.AddDrug(drug);
+        
+        foreach (var substanceName in newDrugDto.Substances)
+        {
+            var substance = _substancesService.GetSubstanceByName(substanceName);
+        
+            if (substance == null)
+            {
+                return NotFound($"Substance '{substanceName}' not found.");
+            }
 
+            newDrug.Substances.Add(substance);
+        }
+        var createdDrug = _drugsService.AddDrug(newDrug);
+        if (createdDrug == null)
+        {
+            return BadRequest("There was an error while adding the drug.");
+        }
 
-        return CreatedAtAction(nameof(GetAllDrugsById), new { id = createdDrug.Id }, createdDrug);
+        return createdDrug;
     }
 
  

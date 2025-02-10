@@ -9,4 +9,6 @@ public interface ISubstancesService
     Substance AddSubstance(Substance substance); 
     Substance UpdateSubstance(Guid id, Substance substance); 
     bool DeleteSubstance(Guid id);
+    
+    Substance GetSubstanceByName(string name);
 }

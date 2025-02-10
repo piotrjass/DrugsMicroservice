@@ -22,8 +22,7 @@ public class SubstancesRepository : ISubstancesRepository
     {
         return _context.Substances.FirstOrDefault(s => s.Id == id); 
     }
-
-    // 3. AddSubstance
+    
     public Substance AddSubstance(Substance substance)
     {
         _context.Substances.Add(substance);  
@@ -41,7 +40,6 @@ public class SubstancesRepository : ISubstancesRepository
             _context.SaveChanges(); 
             return existingSubstance; 
         }
-
         return null;  
     }
     
@@ -54,7 +52,12 @@ public class SubstancesRepository : ISubstancesRepository
             _context.SaveChanges();               
             return true;  
         }
-
         return false; 
+    }
+    
+    public Substance GetSubstanceByName(string name)
+    {
+        return _context.Substances
+            .FirstOrDefault(s => s.SubstanceName.ToLower() == name.ToLower());
     }
 }

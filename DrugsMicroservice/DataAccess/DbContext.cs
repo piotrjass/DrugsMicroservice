@@ -18,9 +18,15 @@ namespace DrugsMicroservice.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Drug>().ToTable("Drugs");
-            modelBuilder.Entity<Substance>().ToTable("Substances");
-            modelBuilder.Entity<Disease>().ToTable("Diseases");
+            
+            modelBuilder.Entity<Drug>()
+                .HasMany(e => e.Substances)
+                .WithMany(e => e.Drugs);
+            
+            modelBuilder.Entity<Substance>()
+                .HasMany(e => e.Diseases)
+                .WithMany(e => e.Substances);
+            
         }
     }
 }

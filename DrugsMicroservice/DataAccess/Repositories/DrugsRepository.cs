@@ -1,5 +1,6 @@
 ﻿using DrugsMicroservice.BusinessLogic.Models;
 using DrugsMicroservice.DataAccess.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugsMicroservice.DataAccess.Repositories;
 
@@ -15,7 +16,8 @@ public class DrugsRepository : IDrugsRepository
 
     public IEnumerable<Drug> GetAllDrugs()
     {
-        return _context.Drugs.ToList();
+        // return _context.Drugs.ToList();
+        return null;
     }
 
     public Drug GetDrugById(Guid id)

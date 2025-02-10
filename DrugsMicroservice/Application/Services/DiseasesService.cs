@@ -12,22 +12,22 @@ public class DiseasesService : IDiseasesService
     {
         _diseasesRepository = diseasesRepository;
     }
-
     public IEnumerable<Disease> GetAllDiseases()
     {
         return _diseasesRepository.GetAll();
     }
-
     public Disease GetDiseaseById(Guid id)
     {
         return _diseasesRepository.GetById(id);
     }
-
+    public Disease GetDiseaseByName(string name)
+    {
+        return _diseasesRepository.GetDiseaseByName(name);
+    }
     public Disease AddDisease(Disease disease)
     {
         return _diseasesRepository.Add(disease);
     }
-
     public Disease UpdateDisease(Guid id, Disease disease)
     {
         var existingDisease = _diseasesRepository.GetById(id);

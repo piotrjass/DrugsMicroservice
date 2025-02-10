@@ -34,6 +34,17 @@ public class DiseasesController : ControllerBase
         return Ok(disease); 
     }
     
+    [HttpGet("GetDiseaseByName/{name}")]
+    public ActionResult<Disease> GetDiseaseByName(string name)
+    {
+        var disease = _diseasesService.GetDiseaseByName(name);
+        if (disease == null)
+        {
+            return NotFound(); 
+        }
+        return Ok(disease); 
+    }
+    
     [HttpPost("AddDisease")]
     public ActionResult<Disease> AddDisease([FromBody] DiseaseCreateDTO newDiseaseDto)
     {

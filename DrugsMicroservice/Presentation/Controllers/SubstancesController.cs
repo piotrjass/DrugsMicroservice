@@ -2,6 +2,7 @@
 using DrugsMicroservice.Application.IServices;
 using DrugsMicroservice.BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace DrugsMicroservice.Presentation.Controllers;
 
@@ -10,10 +11,12 @@ namespace DrugsMicroservice.Presentation.Controllers;
 public class SubstancesController : ControllerBase
 {
     private readonly ISubstancesService _substancesService;
+    private readonly IDiseasesService _diseasesService;
     
-    public SubstancesController(ISubstancesService substancesService)
+    public SubstancesController(ISubstancesService substancesService, IDiseasesService diseasesService)
     {
         _substancesService = substancesService;
+        _diseasesService = diseasesService;
     }
     
     [HttpGet("GetAllSubstances")]
@@ -47,8 +50,19 @@ public class SubstancesController : ControllerBase
             SubstanceName = newSubstanceDto.Name,
             Dosage = newSubstanceDto.Dosage
         };
+        
+        foreach (var diseaseName in newSubstanceDto.Diseases )
+        {
+            var disease = _diseasesService.GetDiseaseByName(diseaseName);
+        
+            if (disease == null)
+            {
+                return NotFound($"Substance '{diseaseName}' not found.");
+            }
 
-     
+            newSubstance.Diseases.Add(disease);
+        }
+        
         var createdSubstance =  _substancesService.AddSubstance(newSubstance); 
 
         if (createdSubstance == null)
@@ -92,5 +106,16 @@ public class SubstancesController : ControllerBase
             return NotFound(); 
         }
         return NoContent(); 
+    }
+    
+    [HttpGet("GetSubstanceByName/{name}")]
+    public ActionResult<Substance> GetSubstanceByName(string name)
+    {
+        var substance = _substancesService.GetSubstanceByName(name);
+        if (substance == null)
+        {
+            return NotFound(); 
+        }
+        return Ok(substance); 
     }
 }

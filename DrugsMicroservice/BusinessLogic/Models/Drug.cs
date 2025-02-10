@@ -7,6 +7,6 @@ public class Drug
     public string Manufacturer { get; set; }
     public decimal Price { get; set; }
 
-    
-    
+    public List<Substance> Substances { get; set; } = [];
+
 }
