@@ -25,6 +25,13 @@ namespace DrugsMicroservice.Application.Services
         {
             return await _drugsRepository.GetDrugByIdAsync(id);
         }
+        
+        public async Task<Drug> GetDrugByNameAsync(string name)
+        {
+            var drug = await _drugsRepository.GetDrugByNameAsync(name); 
+
+            return drug;
+        }
 
         public async Task<Drug> AddDrugAsync(DrugCreateDTO newDrugDto)
         {
@@ -32,7 +39,7 @@ namespace DrugsMicroservice.Application.Services
            var existingDrug = await _drugsRepository.GetDrugByNameAsync(newDrugDto.Name);
             if (existingDrug != null)
             {
-                return null; 
+                throw new InvalidOperationException($"Drug with name '{newDrugDto.Name}' already exists.");
             }
             
             Drug newDrug = new Drug
@@ -48,7 +55,7 @@ namespace DrugsMicroservice.Application.Services
                 var substance = await  _substancesRepository.GetSubstanceByNameAsync(substanceName);
                 if (substance == null)
                 {
-                    return null; 
+                    throw new ArgumentException($"Substance '{substanceName}' not found.");
                 }
                 newDrug.Substances.Add(substance);
             }
@@ -65,6 +72,12 @@ namespace DrugsMicroservice.Application.Services
         public async Task<bool> DeleteDrugAsync(Guid id)
         {
             return await _drugsRepository.DeleteDrugAsync(id);
+        }
+        
+        public async Task<IEnumerable<Drug>> GetDrugsForDiseaseAsync(string diseaseName)
+        {
+            var drugs = await _drugsRepository.GetDrugsByDiseaseAsync(diseaseName);
+            return drugs;
         }
     }
 }

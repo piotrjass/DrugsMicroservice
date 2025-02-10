@@ -50,6 +50,28 @@ namespace DrugsMicroservice.Presentation.Controllers
             {
                 return NotFound();
             }
+
+            return Ok(drug);
+        }
+
+        /// <summary>
+        /// Returns a drug by its name.
+        /// </summary>
+        /// <param name="name">The name of the drug.</param>
+        /// <returns>The drug with the specified name.</returns>
+        /// <response code="200">Returns the drug.</response>
+        /// <response code="404">If the drug with the specified name was not found.</response>
+        [HttpGet("GetDrugByName/{name}")]
+        [ProducesResponseType(typeof(Drug), 200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<Drug>> GetDrugByName(string name)
+        {
+            var drug = await _drugsService.GetDrugByNameAsync(name);
+            if (drug == null)
+            {
+                return NotFound($"Drug '{name}' not found.");
+            }
+
             return Ok(drug);
         }
 
@@ -80,6 +102,7 @@ namespace DrugsMicroservice.Presentation.Controllers
 
             return CreatedAtAction(nameof(GetAllDrugsById), new { id = createdDrug.Id }, createdDrug);
         }
+
         /// <summary>
         /// Updates an existing drug.
         /// </summary>
@@ -132,6 +155,7 @@ namespace DrugsMicroservice.Presentation.Controllers
             {
                 return NotFound();
             }
+
             return NoContent();
         }
     }

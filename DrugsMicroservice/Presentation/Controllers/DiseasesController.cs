@@ -9,10 +9,14 @@ namespace DrugsMicroservice.Presentation.Controllers
     [ApiController]
     public class DiseasesController : ControllerBase
     {
+        private readonly IDrugsService _drugsService;
+        private readonly ISubstancesService _substancesService;
         private readonly IDiseasesService _diseasesService;
 
-        public DiseasesController(IDiseasesService diseasesService)
+        public DiseasesController(IDrugsService drugsService, ISubstancesService substancesService, IDiseasesService diseasesService)
         {
+            _drugsService = drugsService;
+            _substancesService = substancesService;
             _diseasesService = diseasesService;
         }
 
@@ -143,5 +147,50 @@ namespace DrugsMicroservice.Presentation.Controllers
             }
             return NoContent();
         }
+        
+          /// <summary>
+        /// Finds drugs for a given disease by its name.
+        /// </summary>
+        /// <param name="diseaseName">The name of the disease.</param>
+        /// <returns>Returns a list of drugs that are used to treat the disease.</returns>
+        /// <response code="200">Returns the list of drugs for the disease.</response>
+        /// <response code="404">If the disease is not found.</response>
+        [HttpGet("findDrugsForDisease/{diseaseName}")]
+        [ProducesResponseType(typeof(IEnumerable<Drug>), 200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<Drug>>> FindDrugsForDisease(string diseaseName)
+        {
+            var disease = await _diseasesService.GetDiseaseByNameAsync(diseaseName);
+            if (disease == null)
+            {
+                return NotFound($"Disease '{diseaseName}' not found.");
+            }
+
+            var drugs = await _drugsService.GetDrugsForDiseaseAsync(diseaseName);
+            return Ok(drugs);
+        }
+
+        /// <summary>
+        /// Finds substances for a given disease by its name.
+        /// </summary>
+        /// <param name="diseaseName">The name of the disease.</param>
+        /// <returns>Returns a list of substances that are used to treat the disease.</returns>
+        /// <response code="200">Returns the list of substances for the disease.</response>
+        /// <response code="404">If the disease is not found.</response>
+        [HttpGet("findSubstancesForDisease/{diseaseName}")]
+        [ProducesResponseType(typeof(IEnumerable<Substance>), 200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<Substance>>> FindSubstancesForDisease(string diseaseName)
+        {
+            var disease = await _diseasesService.GetDiseaseByNameAsync(diseaseName);
+            if (disease == null)
+            {
+                return NotFound($"Disease '{diseaseName}' not found.");
+            }
+
+            var substances = await _substancesService.GetSubstancesForDiseaseAsync(diseaseName);
+            return Ok(substances);
+        }
     }
+    
 }

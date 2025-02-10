@@ -31,7 +31,7 @@ namespace DrugsMicroservice.DataAccess.Repositories
         public async Task<Drug> GetDrugByNameAsync(string name)
         {
             return await _context.Drugs
-                .FirstOrDefaultAsync(d => d.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); 
+                .FirstOrDefaultAsync(d => d.Name.ToLower() == name.ToLower());
         }
 
         public async Task<Drug> AddDrugAsync(Drug drug)
@@ -59,6 +59,26 @@ namespace DrugsMicroservice.DataAccess.Repositories
             _context.Drugs.Remove(drug);
             await _context.SaveChangesAsync();
             return true;
+        }
+        
+        public async Task<IEnumerable<Drug>> GetDrugsByDiseaseAsync(string diseaseName)
+        {
+            
+            var disease = await _context.Diseases
+                .Include(d => d.Substances) 
+                .Where(d => d.Name.ToLower() == diseaseName.ToLower())
+                .FirstOrDefaultAsync();
+
+            if (disease == null)
+            {
+                return Enumerable.Empty<Drug>();  
+            }
+
+            var drugs = await _context.Drugs
+                .Where(d => d.Substances.Any(s => disease.Substances.Contains(s)))  
+                .ToListAsync();
+
+            return drugs;  
         }
     }
 }

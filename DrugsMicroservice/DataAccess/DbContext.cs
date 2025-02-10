@@ -26,7 +26,6 @@ namespace DrugsMicroservice.DataAccess
             modelBuilder.Entity<Substance>()
                 .HasMany(e => e.Diseases)
                 .WithMany(e => e.Substances);
-            
         }
     }
 }

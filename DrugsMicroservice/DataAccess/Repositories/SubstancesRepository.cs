@@ -64,5 +64,20 @@ namespace DrugsMicroservice.DataAccess.Repositories
             return await _context.Substances
                 .FirstOrDefaultAsync(s => s.SubstanceName == name); 
         }
+        
+        public async Task<IEnumerable<Substance>> GetSubstancesByDiseaseAsync(string diseaseName)
+        {
+            var disease = await _context.Diseases
+                .Include(d => d.Substances)  
+                .Where(d => d.Name.ToLower() == diseaseName.ToLower())
+                .FirstOrDefaultAsync();
+
+            if (disease == null)
+            {
+                return Enumerable.Empty<Substance>();  
+            }
+
+            return disease.Substances;  
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace DrugsMicroservice.Application.IServices
         Task<Substance> AddSubstanceAsync(SubstanceCreateDTO substance);  
         Task<Substance> UpdateSubstanceAsync(Guid id, Substance substance); 
         Task<bool> DeleteSubstanceAsync(Guid id);  
-        Task<Substance> GetSubstanceByNameAsync(string name);  
+        Task<Substance> GetSubstanceByNameAsync(string name);
+        Task<IEnumerable<Substance>> GetSubstancesForDiseaseAsync(string diseaseName);
     }
 }
