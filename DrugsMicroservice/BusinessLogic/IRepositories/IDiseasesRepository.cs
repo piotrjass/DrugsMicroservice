@@ -1,13 +1,13 @@
 ﻿using DrugsMicroservice.BusinessLogic.Models;
 
-namespace DrugsMicroservice.DataAccess.IRepositories;
+namespace DrugsMicroservice.BusinessLogic.IRepositories;
 
 public interface IDiseasesRepository
 {
-    IEnumerable<Disease> GetAll();
-    Disease GetById(Guid id);
-    Disease GetDiseaseByName(string name);
-    Disease Add(Disease disease);
-    Disease Update(Disease disease);
-    bool Delete(Guid id);
+    Task<IEnumerable<Disease>> GetAllAsync();  
+    Task<Disease> GetByIdAsync(Guid id);  
+    Task<Disease> GetDiseaseByNameAsync(string name); 
+    Task<Disease> AddAsync(Disease disease); 
+    Task<Disease> UpdateAsync(Disease disease);  
+    Task<bool> DeleteAsync(Guid id); 
 }

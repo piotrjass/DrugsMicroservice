@@ -1,8 +1,10 @@
 ﻿using DrugsMicroservice.Application.IServices;
 using DrugsMicroservice.BusinessLogic.Models;
-using DrugsMicroservice.DataAccess.IRepositories;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using DrugsMicroservice.BusinessLogic.IRepositories;
 
-namespace DrugsMicroservice.DataAccess.Repositories;
+namespace DrugsMicroservice.Application.Services;
 
 public class DiseasesService : IDiseasesService
 {
@@ -12,42 +14,48 @@ public class DiseasesService : IDiseasesService
     {
         _diseasesRepository = diseasesRepository;
     }
-    public IEnumerable<Disease> GetAllDiseases()
+
+    public async Task<IEnumerable<Disease>> GetAllDiseasesAsync()
     {
-        return _diseasesRepository.GetAll();
+        return await _diseasesRepository.GetAllAsync(); 
     }
-    public Disease GetDiseaseById(Guid id)
+
+    public async Task<Disease> GetDiseaseByIdAsync(Guid id)
     {
-        return _diseasesRepository.GetById(id);
+        return await _diseasesRepository.GetByIdAsync(id); 
     }
-    public Disease GetDiseaseByName(string name)
+
+    public async Task<Disease> GetDiseaseByNameAsync(string name)
     {
-        return _diseasesRepository.GetDiseaseByName(name);
+        return await _diseasesRepository.GetDiseaseByNameAsync(name);  
     }
-    public Disease AddDisease(Disease disease)
+
+    public async Task<Disease> AddDiseaseAsync(Disease disease)
     {
-        return _diseasesRepository.Add(disease);
+        return await _diseasesRepository.AddAsync(disease);  
     }
-    public Disease UpdateDisease(Guid id, Disease disease)
+
+    public async Task<Disease> UpdateDiseaseAsync(Guid id, Disease disease)
     {
-        var existingDisease = _diseasesRepository.GetById(id);
+        var existingDisease = await _diseasesRepository.GetByIdAsync(id);  
         if (existingDisease == null)
         {
-            return null;
+            return null;  
         }
 
-        existingDisease.Name = disease.Name;
+        existingDisease.Name = disease.Name; 
 
-        return _diseasesRepository.Update(existingDisease);
+        return await _diseasesRepository.UpdateAsync(existingDisease);  
     }
 
-    public bool DeleteDisease(Guid id)
+    public async Task<bool> DeleteDiseaseAsync(Guid id)
     {
-        var disease = _diseasesRepository.GetById(id);
+        var disease = await _diseasesRepository.GetByIdAsync(id);  
         if (disease == null)
         {
-            return false;
+            return false;  
         }
-        return _diseasesRepository.Delete(id);
+
+        return await _diseasesRepository.DeleteAsync(id); 
     }
 }

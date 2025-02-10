@@ -1,6 +1,6 @@
 ﻿using DrugsMicroservice.Application.IServices;
 using DrugsMicroservice.Application.Services;
-using DrugsMicroservice.DataAccess.IRepositories;
+using DrugsMicroservice.BusinessLogic.IRepositories;
 using DrugsMicroservice.DataAccess.Repositories;
 
 namespace DrugsMicroservice.Application.Extensions;

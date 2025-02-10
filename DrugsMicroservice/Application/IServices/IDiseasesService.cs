@@ -1,14 +1,15 @@
 ﻿using DrugsMicroservice.BusinessLogic.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace DrugsMicroservice.Application.IServices;
 
 public interface IDiseasesService
 {
-    IEnumerable<Disease> GetAllDiseases();
-    Disease GetDiseaseById(Guid id);
-    Disease GetDiseaseByName(string name);
-    Disease AddDisease(Disease disease);
-    Disease UpdateDisease(Guid id, Disease disease);
-    bool DeleteDisease(Guid id);
-    
+    Task<IEnumerable<Disease>> GetAllDiseasesAsync();  
+    Task<Disease> GetDiseaseByIdAsync(Guid id);  
+    Task<Disease> GetDiseaseByNameAsync(string name);  
+    Task<Disease> AddDiseaseAsync(Disease disease); 
+    Task<Disease> UpdateDiseaseAsync(Guid id, Disease disease); 
+    Task<bool> DeleteDiseaseAsync(Guid id);  
 }
