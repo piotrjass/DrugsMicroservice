@@ -3,7 +3,6 @@ using DrugsMicroservice.Application.IServices;
 using DrugsMicroservice.BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace DrugsMicroservice.Presentation.Controllers
 {
     [Route("api/[controller]")]
@@ -11,6 +10,7 @@ namespace DrugsMicroservice.Presentation.Controllers
     public class SubstancesController : ControllerBase
     {
         private readonly ISubstancesService _substancesService;
+        
         public SubstancesController(ISubstancesService substancesService)
         {
             _substancesService = substancesService;
@@ -20,7 +20,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// Gets all substances.
         /// </summary>
         /// <returns>A list of substances.</returns>
-        [HttpGet("GetAllSubstances")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Substance>), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Substance>>> GetAllSubstances()
@@ -38,7 +38,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="id">The ID of the substance.</param>
         /// <returns>A substance object.</returns>
-        [HttpGet("GetSubstanceById/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Substance), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Substance>> GetSubstanceById(Guid id)
@@ -56,7 +56,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="newSubstanceDto">The substance data to add.</param>
         /// <returns>The created substance.</returns>
-        [HttpPost("AddSubstance")]
+        [HttpPost]
         [ProducesResponseType(typeof(Substance), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -77,14 +77,13 @@ namespace DrugsMicroservice.Presentation.Controllers
             return CreatedAtAction(nameof(GetSubstanceById), new { id = createdSubstance.Id }, createdSubstance);
         }
 
-
         /// <summary>
         /// Updates a substance by its ID.
         /// </summary>
         /// <param name="id">The ID of the substance to update.</param>
         /// <param name="substanceUpdateDto">The updated substance data.</param>
         /// <returns>The updated substance.</returns>
-        [HttpPut("UpdateSubstance/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Substance), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -113,7 +112,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// Deletes a substance by its ID.
         /// </summary>
         /// <param name="id">The ID of the substance to delete.</param>
-        [HttpDelete("DeleteSubstance/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> DeleteSubstance(Guid id)
@@ -131,7 +130,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="name">The name of the substance.</param>
         /// <returns>A substance object.</returns>
-        [HttpGet("GetSubstanceByName/{name}")]
+        [HttpGet("search/{name}")]
         [ProducesResponseType(typeof(Substance), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Substance>> GetSubstanceByName(string name)
