@@ -24,7 +24,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// Gets all diseases.
         /// </summary>
         /// <returns>A list of all diseases.</returns>
-        [HttpGet("GetAllDiseases")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Disease>), 200)]
         [ProducesResponseType(500)] // Internal server error in case of unexpected issues
         public async Task<ActionResult<IEnumerable<Disease>>> GetAllDiseases()
@@ -38,7 +38,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="id">The ID of the disease.</param>
         /// <returns>The disease with the specified ID.</returns>
-        [HttpGet("GetDiseaseById/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Disease), 200)]
         [ProducesResponseType(404)] // Disease not found
         [ProducesResponseType(500)] // Internal server error in case of unexpected issues
@@ -57,7 +57,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="name">The name of the disease.</param>
         /// <returns>The disease with the specified name.</returns>
-        [HttpGet("GetDiseaseByName/{name}")]
+        [HttpGet("search/{name}")]
         [ProducesResponseType(typeof(Disease), 200)]
         [ProducesResponseType(404)] // Disease not found
         [ProducesResponseType(500)] // Internal server error in case of unexpected issues
@@ -76,7 +76,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="newDiseaseDto">The data transfer object for the new disease.</param>
         /// <returns>The newly created disease.</returns>
-        [HttpPost("AddDisease")]
+        [HttpPost]
         [ProducesResponseType(typeof(Disease), 201)]
         [ProducesResponseType(400)] // Bad request in case of invalid data
         [ProducesResponseType(500)] // Internal server error in case of unexpected issues
@@ -104,7 +104,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <param name="id">The ID of the disease to update.</param>
         /// <param name="diseaseUpdateDto">The data transfer object with updated disease information.</param>
         /// <returns>The updated disease.</returns>
-        [HttpPut("UpdateDisease/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Disease), 200)]
         [ProducesResponseType(400)] // Bad request if input data is invalid
         [ProducesResponseType(404)] // Disease not found
@@ -134,7 +134,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="id">The ID of the disease to delete.</param>
         /// <returns>No content if deletion is successful.</returns>
-        [HttpDelete("DeleteDisease/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(204)] // No content if successfully deleted
         [ProducesResponseType(404)] // Not found if the disease does not exist
         [ProducesResponseType(500)] // Internal server error in case of unexpected issues
@@ -148,14 +148,12 @@ namespace DrugsMicroservice.Presentation.Controllers
             return NoContent();
         }
         
-          /// <summary>
+        /// <summary>
         /// Finds drugs for a given disease by its name.
         /// </summary>
         /// <param name="diseaseName">The name of the disease.</param>
         /// <returns>Returns a list of drugs that are used to treat the disease.</returns>
-        /// <response code="200">Returns the list of drugs for the disease.</response>
-        /// <response code="404">If the disease is not found.</response>
-        [HttpGet("findDrugsForDisease/{diseaseName}")]
+        [HttpGet("{diseaseName}/drugs")]
         [ProducesResponseType(typeof(IEnumerable<Drug>), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Drug>>> FindDrugsForDisease(string diseaseName)
@@ -175,9 +173,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// </summary>
         /// <param name="diseaseName">The name of the disease.</param>
         /// <returns>Returns a list of substances that are used to treat the disease.</returns>
-        /// <response code="200">Returns the list of substances for the disease.</response>
-        /// <response code="404">If the disease is not found.</response>
-        [HttpGet("findSubstancesForDisease/{diseaseName}")]
+        [HttpGet("{diseaseName}/substances")]
         [ProducesResponseType(typeof(IEnumerable<Substance>), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Substance>>> FindSubstancesForDisease(string diseaseName)
@@ -192,5 +188,4 @@ namespace DrugsMicroservice.Presentation.Controllers
             return Ok(substances);
         }
     }
-    
 }

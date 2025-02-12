@@ -24,7 +24,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <returns>Returns a list of all drugs.</returns>
         /// <response code="200">Returns the list of drugs.</response>
         /// <response code="500">If there was an error retrieving the drugs.</response>
-        [HttpGet("GetAllDrugs")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Drug>), 200)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Drug>>> GetAllDrugs()
@@ -40,10 +40,10 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <returns>Returns a drug object.</returns>
         /// <response code="200">Returns the drug.</response>
         /// <response code="404">If the drug with the specified ID was not found.</response>
-        [HttpGet("GetAllDrugsById/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Drug), 200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Drug>> GetAllDrugsById(Guid id)
+        public async Task<ActionResult<Drug>> GetDrugById(Guid id)
         {
             var drug = await _drugsService.GetDrugByIdAsync(id);
             if (drug == null)
@@ -61,7 +61,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <returns>The drug with the specified name.</returns>
         /// <response code="200">Returns the drug.</response>
         /// <response code="404">If the drug with the specified name was not found.</response>
-        [HttpGet("GetDrugByName/{name}")]
+        [HttpGet("search/{name}")]
         [ProducesResponseType(typeof(Drug), 200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Drug>> GetDrugByName(string name)
@@ -83,7 +83,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <response code="201">Returns the created drug.</response>
         /// <response code="400">If the drug data is invalid.</response>
         /// <response code="404">If any of the substances for the drug do not exist.</response>
-        [HttpPost("AddDrug")]
+        [HttpPost]
         [ProducesResponseType(typeof(Drug), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -100,7 +100,7 @@ namespace DrugsMicroservice.Presentation.Controllers
                 return BadRequest("There was an error while adding the drug.");
             }
 
-            return CreatedAtAction(nameof(GetAllDrugsById), new { id = createdDrug.Id }, createdDrug);
+            return CreatedAtAction(nameof(GetDrugById), new { id = createdDrug.Id }, createdDrug);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <response code="200">Returns the updated drug.</response>
         /// <response code="400">If the drug data is invalid.</response>
         /// <response code="404">If the drug with the specified ID was not found.</response>
-        [HttpPut("UpdateDrug/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Drug), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -145,7 +145,7 @@ namespace DrugsMicroservice.Presentation.Controllers
         /// <returns>Returns a no content status if the drug was deleted.</returns>
         /// <response code="204">If the drug was successfully deleted.</response>
         /// <response code="404">If the drug with the specified ID was not found.</response>
-        [HttpDelete("DeleteDrug/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> DeleteDrug(Guid id)
@@ -160,3 +160,4 @@ namespace DrugsMicroservice.Presentation.Controllers
         }
     }
 }
+
