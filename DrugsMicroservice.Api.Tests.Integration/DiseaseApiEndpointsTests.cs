@@ -28,7 +28,7 @@ public class DiseaseApiEndpointsTests : IClassFixture<CustomWebApplicationFactor
         var disease = _fixture.Create<DiseaseCreateDTO>();
         var content = new StringContent(JsonConvert.SerializeObject(disease), Encoding.UTF8, "application/json");
         // Act
-        var response = await _client.PostAsync($"{_client.BaseAddress}/Diseases/AddDisease", content);
+        var response = await _client.PostAsync($"{_client.BaseAddress}/Diseases", content);
         // Assert
         response.EnsureSuccessStatusCode(); // Ensure 200-299 status code range
         var dbDisease = await _context.Diseases
@@ -45,7 +45,7 @@ public class DiseaseApiEndpointsTests : IClassFixture<CustomWebApplicationFactor
         var content = new StringContent(JsonConvert.SerializeObject(disease), Encoding.UTF8, "application/json");
 
         // Act
-        var createResponse = await _client.PostAsync($"{_client.BaseAddress}/Diseases/AddDisease", content);
+        var createResponse = await _client.PostAsync($"{_client.BaseAddress}/Diseases", content);
         createResponse.EnsureSuccessStatusCode();
 
         var dbDiseaseBeforeUpdate = await _context.Diseases
@@ -57,7 +57,7 @@ public class DiseaseApiEndpointsTests : IClassFixture<CustomWebApplicationFactor
         dbDiseaseBeforeUpdate.Name = "Updated Name";  
         var updateContent = new StringContent(JsonConvert.SerializeObject(dbDiseaseBeforeUpdate), Encoding.UTF8, "application/json");
 
-        var updateResponse = await _client.PutAsync($"{_client.BaseAddress}/Diseases/UpdateDisease/{dbDiseaseBeforeUpdate.Id}", updateContent);
+        var updateResponse = await _client.PutAsync($"{_client.BaseAddress}/Diseases/{dbDiseaseBeforeUpdate.Id}", updateContent);
 
         // Assert:
         updateResponse.EnsureSuccessStatusCode(); // Ensure 200-299 status code range
@@ -77,7 +77,7 @@ public class DiseaseApiEndpointsTests : IClassFixture<CustomWebApplicationFactor
         var content = new StringContent(JsonConvert.SerializeObject(disease), Encoding.UTF8, "application/json");
 
         // Act: First, create the disease
-        var createResponse = await _client.PostAsync($"{_client.BaseAddress}/Diseases/AddDisease", content);
+        var createResponse = await _client.PostAsync($"{_client.BaseAddress}/Diseases", content);
         createResponse.EnsureSuccessStatusCode();
 
         var dbDiseaseBeforeDelete = await _context.Diseases
@@ -86,7 +86,7 @@ public class DiseaseApiEndpointsTests : IClassFixture<CustomWebApplicationFactor
         Assert.NotNull(dbDiseaseBeforeDelete); // Ensure it exists before deletion
 
         // Now delete the disease
-        var deleteResponse = await _client.DeleteAsync($"{_client.BaseAddress}/Diseases/DeleteDisease/{dbDiseaseBeforeDelete.Id}");
+        var deleteResponse = await _client.DeleteAsync($"{_client.BaseAddress}/Diseases/{dbDiseaseBeforeDelete.Id}");
 
         // Assert: Ensure the delete was successful
         deleteResponse.EnsureSuccessStatusCode(); // Ensure 200-299 status code range

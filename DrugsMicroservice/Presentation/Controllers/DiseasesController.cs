@@ -188,4 +188,6 @@ namespace DrugsMicroservice.Presentation.Controllers
             return Ok(substances);
         }
     }
+    
+    
 }
